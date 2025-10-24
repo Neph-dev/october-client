@@ -33,7 +33,6 @@ const FeedView = () => {
                 url += `&company=${encodeURIComponent(company)}`;
             }
 
-            // Use the Next.js API route instead of direct backend call
             const response = await fetch(url);
 
             if (!response.ok) {
@@ -42,8 +41,6 @@ const FeedView = () => {
 
             const data = await response.json();
 
-            // Assuming the API returns { items: [], total: number }
-            // Adjust this based on your actual API response structure
             if (data.articles || Array.isArray(data)) {
                 const items = data.articles || data;
                 const total = data.total || items.length;
@@ -54,7 +51,6 @@ const FeedView = () => {
             }
         } catch (error) {
             console.error('Error fetching feeds:', error);
-            // Fallback behavior on error
             setFeedData([]);
             setTotalItems(0);
             setHasMore(false);
@@ -63,12 +59,10 @@ const FeedView = () => {
         }
     };
 
-    // Load feeds when component mounts or page changes
     useEffect(() => {
         fetchFeeds(currentPage, selectedCompany);
     }, [currentPage, selectedCompany]);
 
-    // Reset to page 1 when company changes
     useEffect(() => {
         setCurrentPage(1);
     }, [selectedCompany]);
@@ -119,7 +113,7 @@ const FeedView = () => {
 
                 <div className="p-8 pt-16 md:pt-8">
                     <div className="mb-12">
-                        <Tab />
+                        <Tab active='News Feed' />
                     </div>
 
                     <div className="mb-8">
