@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useMemo } from 'react';
 
 interface TradingViewChartProps {
     symbol: string;
@@ -22,13 +22,16 @@ const TradingViewChart: React.FC<TradingViewChartProps> = ({
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
-    // Generate unique container ID to avoid conflicts
-    const uniqueContainerId = `${container_id}_${Math.random().toString(36).substr(2, 9)}`;
+    // Generate unique container ID to avoid conflicts - memoized to prevent hydration issues
+    const uniqueContainerId = useMemo(() => {
+        // Create a deterministic unique ID based on symbol and container_id
+        const cleanSymbol = symbol.replace(/[^a-zA-Z0-9]/g, '');
+        return `${container_id}_${cleanSymbol}`;
+    }, [container_id, symbol]);
 
     useEffect(() => {
         const initializeWidget = () => {
             if (!containerRef.current) return;
-
             try {
                 // Clean up any existing widget first
                 if (widgetRef.current) {
@@ -147,7 +150,7 @@ const TradingViewChart: React.FC<TradingViewChartProps> = ({
                 widgetRef.current = null;
             }
         };
-    }, [symbol, theme, height, width, container_id]);
+    }, [symbol, theme, height, width, uniqueContainerId]);
 
     if (error) {
         return (
