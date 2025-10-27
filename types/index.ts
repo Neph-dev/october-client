@@ -1,7 +1,6 @@
 export * from "./Industry";
 export * from "./KeyPerson";
 
-// Chat types
 export interface ChatMessage {
     id: string;
     type: 'user' | 'assistant';
@@ -31,4 +30,18 @@ export interface AIQueryResponse {
     confidence: number;
     processing_time: number;
     companies_referenced: string[];
+}
+
+export interface Ticker {
+    company_name: string;
+    ticker: string;
+    stock_exchange: string;
+    industry: string;
+    country: string;
+}
+
+export interface TickersResponse {
+    tickers: Ticker[];
+    count: number;
+    last_updated: string;
 }

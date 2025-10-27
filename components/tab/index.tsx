@@ -18,6 +18,10 @@ const Tab = ({ active }: { active: string; }) => {
             path: '/feeds',
         },
         {
+            label: 'Charts',
+            path: '/charts',
+        },
+        {
             label: 'Chat',
             path: '/chat',
         }
