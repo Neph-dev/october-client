@@ -171,8 +171,8 @@ const StockQuotes: React.FC<StockQuotesProps> = ({
     }
 
     return (
-        <div className="bg-gray-900 rounded-lg p-6">
-            <div className="flex justify-between items-center mb-6">
+        <div className="bg-gray-900 rounded-lg p-3 flex flex-col max-h-[80vh]">
+            <div className="flex justify-between items-center mb-6 flex-shrink-0">
                 <h3 className="text-lg font-semibold text-white">Market Data</h3>
                 <div className="flex items-center text-xs text-gray-400">
                     <div className="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></div>
@@ -180,12 +180,12 @@ const StockQuotes: React.FC<StockQuotesProps> = ({
                 </div>
             </div>
 
-            <div className="space-y-1">
+            <div className="overflow-y-auto flex-1">
                 {quotes.map((quote) => (
                     <div
                         key={quote.ticker}
                         onClick={() => onTickerSelect?.(quote.ticker)}
-                        className={`flex justify-between items-center p-3 rounded-lg cursor-pointer transition-all hover:bg-gray-800 ${selectedTicker === quote.ticker ? 'bg-gray-800 ring-1 ring-emerald-500' : ''
+                        className={`flex justify-between m-1 items-center p-2 rounded-lg cursor-pointer transition-all hover:bg-gray-800 ${selectedTicker === quote.ticker ? 'bg-gray-800 ring-1 ring-emerald-500' : ''
                             }`}
                     >
                         <div className="flex-1">
@@ -222,7 +222,7 @@ const StockQuotes: React.FC<StockQuotesProps> = ({
                 ))}
             </div>
 
-            <div className="mt-4 pt-4 border-t border-gray-700">
+            <div className="mt-4 pt-4 border-t border-gray-700 shrink-0">
                 <div className="text-xs text-gray-400">
                     Last updated: {new Date().toLocaleTimeString()}
                 </div>

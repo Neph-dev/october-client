@@ -8,6 +8,15 @@ import StockQuotes from '../../components/charts/StockQuotes';
 import { useCompany } from '../../components/context/CompanyContext';
 import { Ticker, TickersResponse } from '@/types';
 
+interface MarketStatus {
+    exchange: string;
+    status: 'open' | 'closed' | 'pre_market' | 'after_hours';
+    next_open?: string;
+    next_close?: string;
+    timezone: string;
+    current_time: string;
+}
+
 const ChartsPage = () => {
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [selectedTicker, setSelectedTicker] = useState('NYSE:LMT');
@@ -15,6 +24,8 @@ const ChartsPage = () => {
     const [tickersData, setTickersData] = useState<Ticker[]>([]);
     const [isLoadingTickers, setIsLoadingTickers] = useState(true);
     const [useTradingView] = useState(true);
+    const [marketStatus, setMarketStatus] = useState<MarketStatus | null>(null);
+    const [isLoadingMarketStatus, setIsLoadingMarketStatus] = useState(true);
     const { selectedCompany } = useCompany();
 
     useEffect(() => {
@@ -48,7 +59,39 @@ const ChartsPage = () => {
             }
         };
 
+        const fetchMarketStatus = async () => {
+            try {
+                setIsLoadingMarketStatus(true);
+                const response = await fetch('/api/market/status/US');
+                if (!response.ok) {
+                    throw new Error('Failed to fetch market status');
+                }
+
+                const data: MarketStatus = await response.json();
+                setMarketStatus(data);
+            } catch (error) {
+                console.error('Error fetching market status:', error);
+                // Fallback market status
+                setMarketStatus({
+                    exchange: 'US',
+                    status: 'closed',
+                    timezone: 'America/New_York',
+                    current_time: new Date().toISOString()
+                });
+            } finally {
+                setIsLoadingMarketStatus(false);
+            }
+        };
+
         fetchTickers();
+        fetchMarketStatus();
+
+        // Refresh market status every 60 seconds
+        const statusInterval = setInterval(fetchMarketStatus, 60000);
+
+        return () => {
+            clearInterval(statusInterval);
+        };
     }, []);
 
     const getTickerFromCompany = (companyName: string): string => {
@@ -75,6 +118,43 @@ const ChartsPage = () => {
 
     const getCurrentTickerSymbol = () => {
         return selectedTicker.split(':')[1] || selectedTicker;
+    };
+
+    const getMarketStatusDisplay = () => {
+        if (!marketStatus) return { text: 'Loading...', color: 'text-gray-400', dotColor: 'bg-gray-400' };
+
+        switch (marketStatus.status) {
+            case 'open':
+                return {
+                    text: 'Market Open',
+                    color: 'text-green-400',
+                    dotColor: 'bg-green-400 animate-pulse'
+                };
+            case 'pre_market':
+                return {
+                    text: 'Pre-Market',
+                    color: 'text-yellow-400',
+                    dotColor: 'bg-yellow-400 animate-pulse'
+                };
+            case 'after_hours':
+                return {
+                    text: 'After Hours',
+                    color: 'text-blue-400',
+                    dotColor: 'bg-blue-400 animate-pulse'
+                };
+            case 'closed':
+                return {
+                    text: 'Market Closed',
+                    color: 'text-red-400',
+                    dotColor: 'bg-red-400'
+                };
+            default:
+                return {
+                    text: 'Unknown',
+                    color: 'text-gray-400',
+                    dotColor: 'bg-gray-400'
+                };
+        }
     };
 
     return (
@@ -200,14 +280,73 @@ const ChartsPage = () => {
                                     <div className="flex items-center justify-between">
                                         <div>
                                             <p className="text-gray-400 text-sm">Market Status</p>
+                                            {isLoadingMarketStatus ? (
+                                                <div className="animate-pulse">
+                                                    <div className="h-5 bg-gray-700 rounded w-24 mt-1"></div>
+                                                </div>
+                                            ) : (
+                                                <p className={`font-semibold ${getMarketStatusDisplay().color}`}>
+                                                    {getMarketStatusDisplay().text}
+                                                </p>
+                                            )}
+                                            {marketStatus && marketStatus.next_open && (
+                                                <p className="text-gray-500 text-xs mt-1">
+                                                    Next: {new Date(marketStatus.next_open).toLocaleDateString('en-US', {
+                                                        weekday: 'short',
+                                                        month: 'short',
+                                                        day: 'numeric',
+                                                        hour: 'numeric',
+                                                        minute: '2-digit',
+                                                        timeZone: 'America/New_York'
+                                                    })} ET
+                                                </p>
+                                            )}
+                                        </div>
+                                        <div className={`w-3 h-3 rounded-full ${isLoadingMarketStatus ? 'bg-gray-400' : getMarketStatusDisplay().dotColor}`}></div>
+                                    </div>
+                                </div>
+
+                                <div className="bg-gray-900 rounded-lg p-6">
+                                    <div className="flex items-center justify-between">
+                                        <div>
+                                            <p className="text-gray-400 text-sm">Exchange</p>
                                             <p className="text-white font-semibold">
-                                                -
+                                                NYSE
+                                            </p>
+                                            <p className="text-gray-500 text-xs mt-1">
+                                                New York Stock Exchange
                                             </p>
                                         </div>
-                                        <div className={`w-3 h-3 rounded-full ${new Date().getHours() >= 9 && new Date().getHours() < 16
-                                            ? 'bg-green-400 animate-pulse'
-                                            : 'bg-red-400'
-                                            }`}></div>
+                                    </div>
+                                </div>
+
+                                <div className="bg-gray-900 rounded-lg p-6">
+                                    <div className="flex items-center justify-between">
+                                        <div>
+                                            <p className="text-gray-400 text-sm">Timezone</p>
+                                            <p className="text-white font-semibold">
+                                                Eastern Time
+                                            </p>
+                                            {marketStatus && (
+                                                <div className="text-gray-500 text-xs mt-1 space-y-1">
+                                                    <p>
+                                                        {new Date(marketStatus.current_time).toLocaleTimeString('en-US', {
+                                                            timeZone: 'America/New_York',
+                                                            hour: 'numeric',
+                                                            minute: '2-digit',
+                                                            second: '2-digit'
+                                                        })} ET
+                                                    </p>
+                                                    <p>
+                                                        Local time: {new Date(marketStatus.current_time).toLocaleString('en-US', {
+                                                            hour: 'numeric',
+                                                            minute: '2-digit',
+                                                            second: '2-digit'
+                                                        })}
+                                                    </p>
+                                                </div>
+                                            )}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
