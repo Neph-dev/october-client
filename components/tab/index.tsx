@@ -1,6 +1,6 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 interface TabProps {
     label?: string;
@@ -10,8 +10,6 @@ interface TabProps {
 }
 
 const Tab = ({ active }: { active: string; }) => {
-    const route = useRouter();
-
     const tabsElements: TabProps[] = [
         {
             label: 'Home',
@@ -31,15 +29,12 @@ const Tab = ({ active }: { active: string; }) => {
         }
     ];
 
-    const onClick = (tab: TabProps) => {
-        route.push(tab.path);
-    };
-
     return tabsElements.map((tab, index) => (
-        <button
+        <Link
             key={index}
-            onClick={() => onClick(tab)}
-            className={`relative px-6 py-3 font-medium transition-all ${active === tab.label
+            href={tab.path}
+            prefetch={true}
+            className={`relative px-6 py-3 font-medium transition-all inline-block ${active === tab.label
                 ? 'text-white'
                 : 'text-gray-400 hover:text-gray-300'
                 }`}
@@ -59,7 +54,7 @@ const Tab = ({ active }: { active: string; }) => {
             {active === tab.label && (
                 <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-linear-to-r from-emerald-500 to-teal-500 rounded-full"></div>
             )}
-        </button>
+        </Link>
     ));
 };
 
