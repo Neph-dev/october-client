@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: NextRequest) {
     try {
-        const response = await fetch(`${API_URL}companies`, {
+        const response = await fetch(`${API_URL}/companies`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
