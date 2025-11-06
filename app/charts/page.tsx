@@ -229,8 +229,8 @@ const ChartsPage = () => {
 
                         {/* Main Chart Area */}
                         <div className="xl:col-span-3">
-                            <div className="bg-gray-900 rounded-lg p-6">
-                                <div className="flex justify-between items-center mb-6">
+                            <div className="md:bg-gray-900 bg-transparent rounded-lg  md:p-6 p-0 w-full">
+                                <div className="md:flex justify-between items-center mb-6">
                                     <div>
                                         <h3 className="text-xl font-semibold text-white">
                                             {getCurrentTickerSymbol()} Chart
@@ -238,9 +238,6 @@ const ChartsPage = () => {
                                         <p className="text-gray-400 text-sm">
                                             Advanced charting powered by TradingView
                                         </p>
-                                    </div>
-
-                                    <div>
                                     </div>
 
                                     <div className="flex items-center space-x-2">
@@ -264,7 +261,7 @@ const ChartsPage = () => {
                                     </div>
                                 </div>
 
-                                <div className="h-[600px]">
+                                <div className="h-[600px] w-full">
                                     <TradingViewChart
                                         symbol={selectedTicker}
                                         height={600}
