@@ -1,18 +1,22 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useState } from "react";
 
 interface TabProps {
-    label: string;
+    label?: string;
     path: string;
     count?: number | null;
+    icon?: React.ReactNode;
 }
 
 const Tab = ({ active }: { active: string; }) => {
     const route = useRouter();
 
     const tabsElements: TabProps[] = [
+        {
+            label: 'Home',
+            path: '/',
+        },
         {
             label: 'News Feed',
             path: '/feeds',
@@ -40,7 +44,8 @@ const Tab = ({ active }: { active: string; }) => {
                 : 'text-gray-400 hover:text-gray-300'
                 }`}
         >
-            <span className="flex items-center gap-2">
+            <span className="flex items-center justify-center gap-2">
+                {tab.icon}
                 {tab.label}
                 {tab.count && (
                     <span className={`text-xs px-2 py-0.5 rounded-full ${active === tab.label
