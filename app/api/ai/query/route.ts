@@ -1,3 +1,4 @@
+import { API_URL } from '@/config/env';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(request: NextRequest) {
@@ -11,8 +12,7 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        // Forward the request to the backend
-        const backendResponse = await fetch('http://localhost:8080/ai/query', {
+        const backendResponse = await fetch(`${API_URL}/ai/query`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -26,7 +26,6 @@ export async function POST(request: NextRequest) {
 
         const data = await backendResponse.json();
 
-        // Add CORS headers
         const response = NextResponse.json(data);
         response.headers.set('Access-Control-Allow-Origin', '*');
         response.headers.set('Access-Control-Allow-Methods', 'POST, OPTIONS');

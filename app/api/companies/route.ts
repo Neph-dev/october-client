@@ -1,9 +1,9 @@
+import { API_URL } from '@/config/env';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: NextRequest) {
     try {
-        // Make the request to your backend API
-        const response = await fetch(`http://localhost:8080/companies`, {
+        const response = await fetch(`${API_URL}companies`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

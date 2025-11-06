@@ -1,8 +1,9 @@
+import { API_URL } from '@/config/env';
 import { NextResponse } from 'next/server';
 
 export async function GET() {
     try {
-        const response = await fetch('http://localhost:8080/market/tickers', {
+        const response = await fetch(`${API_URL}/market/tickers`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

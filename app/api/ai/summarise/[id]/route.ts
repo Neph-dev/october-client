@@ -1,3 +1,4 @@
+import { API_URL } from '@/config/env';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(
@@ -14,8 +15,7 @@ export async function GET(
             );
         }
 
-        // Make the request to your backend AI summarization API
-        const response = await fetch(`http://localhost:8080/ai/summarise/${articleId}`, {
+        const response = await fetch(`${API_URL}/ai/summarise/${articleId}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

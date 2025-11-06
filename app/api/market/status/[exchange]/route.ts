@@ -1,3 +1,4 @@
+import { API_URL } from '@/config/env';
 import { NextRequest, NextResponse } from 'next/server';
 
 interface MarketStatus {
@@ -29,7 +30,7 @@ export async function GET(
 
         // Try to fetch from backend first
         try {
-            const backendResponse = await fetch(`http://localhost:8080/market/status/${exchange}`, {
+            const backendResponse = await fetch(`${API_URL}/market/status/${exchange}`, {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json',

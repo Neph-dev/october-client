@@ -1,3 +1,4 @@
+import { API_URL } from '@/config/env';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: NextRequest) {
@@ -8,7 +9,7 @@ export async function GET(request: NextRequest) {
         const company = searchParams.get('company');
 
         // Build the backend URL with parameters
-        let backendUrl = `http://localhost:8080/news?limit=${limit}&offset=${offset}`;
+        let backendUrl = `${API_URL}/news?limit=${limit}&offset=${offset}`;
         if (company) {
             backendUrl += `&company=${encodeURIComponent(company)}`;
         }

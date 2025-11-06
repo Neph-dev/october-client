@@ -1,3 +1,4 @@
+import { API_URL } from '@/config/env';
 import { DefaultTickers } from '@/types/tickers';
 import { NextResponse } from 'next/server';
 
@@ -11,7 +12,7 @@ export async function GET(request: Request) {
             tickers = Object.values(DefaultTickers).join(',');
         }
 
-        const response = await fetch(`http://localhost:8080/market/quotes?tickers=${encodeURIComponent(tickers)}`, {
+        const response = await fetch(`${API_URL}/market/quotes?tickers=${encodeURIComponent(tickers)}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
