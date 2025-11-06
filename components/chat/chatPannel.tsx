@@ -105,7 +105,7 @@ const ChatPanel = () => {
             text: "Who is the CEO of the RTX?",
         },
         {
-            text: "How did the company perform last quarter?",
+            text: "How did Lockheed Martin perform last quarter?",
         }
     ];
 
@@ -140,16 +140,12 @@ const ChatPanel = () => {
                                             </h2>
                                             <p className="text-gray-400 max-w-xl mx-auto mb-8">
                                                 Ask any question related to defense & aerospace market intelligence.
-                                                This chat is designed to help you with insights and data.
-                                            </p>
-                                            <p className="text-sm text-gray-400">
-                                                Please note that the responses are generated based on available data and may not always be accurate.
                                             </p>
                                         </div>
 
                                         <div className="mb-8">
                                             <p className="text-sm font-semibold text-gray-400 mb-4 uppercase tracking-wide">
-                                                Common Prompts
+                                                Example Prompts
                                             </p>
                                             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                                                 {prompts.map((prompt, index) => (
@@ -196,6 +192,12 @@ const ChatPanel = () => {
                                         </div>
                                     </>
                                 )}
+                            </div>
+
+                            <div className="text-center mb-2">
+                                <p className="text-sm text-gray-400">
+                                    Responses may include data from various sources and should be independently verified. This chat is stored locally in your browser's storage.
+                                </p>
                             </div>
 
                             <div className="p-8 pt-4">
