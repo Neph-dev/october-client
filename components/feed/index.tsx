@@ -111,13 +111,14 @@ const FeedView = () => {
                     </svg>
                 </button>
 
-                <div className="p-8 pt-16 md:pt-8">
-                    <div className="mb-12">
-                        <Tab active='News Feed' />
+                <div className="p-4 md:p-8 pt-16 md:pt-8">
+                    <div className="mb-8 md:mb-12">
+                        <Tab active="News Feed" />
                     </div>
 
-                    <div className="mb-8">
-                        <h2 className="text-5xl font-bold mb-2">Feeds</h2>
+                    <div className="mb-6 md:mb-8">
+                        <h2 className="text-3xl md:text-5xl font-bold mb-2">Feeds</h2>
+
                         {selectedCompany !== 'All Companies' && (
                             <p className="text-gray-400 text-lg">
                                 Showing feeds for: <span className="text-emerald-400 font-medium">{selectedCompany}</span>

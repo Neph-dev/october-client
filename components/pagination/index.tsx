@@ -21,18 +21,19 @@ const Pagination = ({
     handleNextPage
 }: PaginationProps) => {
     return (
-        <div className="flex items-center justify-between py-8 border-t border-gray-800">
-            <div className="text-gray-400 text-sm">
+        <div className="flex flex-col md:flex-row items-center justify-between py-4 md:py-8 border-t border-gray-800 gap-4">
+            <div className="text-gray-400 text-xs md:text-sm text-center md:text-left">
                 Showing {((currentPage - 1) * itemsPerPage) + 1} to {Math.min(currentPage * itemsPerPage, totalItems)} of {totalItems} results
             </div>
 
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-1 md:space-x-2">
                 <button
                     onClick={handlePrevPage}
                     disabled={currentPage <= 1 || isLoading}
-                    className="px-4 py-2 text-sm font-medium text-gray-400 bg-gray-800 border border-gray-700 rounded-lg hover:bg-gray-700 hover:text-white disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    className="px-3 md:px-4 py-2 text-xs md:text-sm font-medium text-gray-400 bg-gray-800 border border-gray-700 rounded-lg hover:bg-gray-700 hover:text-white disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 >
-                    Previous
+                    <span className="hidden md:inline">Previous</span>
+                    <span className="md:hidden">Prev</span>
                 </button>
 
                 <div className="flex items-center space-x-1">
@@ -55,7 +56,7 @@ const Pagination = ({
                                 key={pageNumber}
                                 onClick={() => goToPage(pageNumber)}
                                 disabled={isLoading}
-                                className={`px-3 py-2 text-sm font-medium border rounded-lg transition-colors ${pageNumber === currentPage
+                                className={`w-8 h-8 md:w-auto md:h-auto md:px-3 md:py-2 text-xs md:text-sm font-medium border rounded-lg transition-colors flex items-center justify-center ${pageNumber === currentPage
                                     ? 'bg-emerald-600 text-white border-emerald-600'
                                     : 'text-gray-400 bg-gray-800 border-gray-700 hover:bg-gray-700 hover:text-white'
                                     } disabled:opacity-50 disabled:cursor-not-allowed`}
@@ -69,7 +70,7 @@ const Pagination = ({
                 <button
                     onClick={handleNextPage}
                     disabled={!hasMore || isLoading}
-                    className="px-4 py-2 text-sm font-medium text-gray-400 bg-gray-800 border border-gray-700 rounded-lg hover:bg-gray-700 hover:text-white disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    className="px-3 md:px-4 py-2 text-xs md:text-sm font-medium text-gray-400 bg-gray-800 border border-gray-700 rounded-lg hover:bg-gray-700 hover:text-white disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 >
                     Next
                 </button>
