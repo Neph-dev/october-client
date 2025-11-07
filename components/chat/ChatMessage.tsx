@@ -37,9 +37,12 @@ const ChatMessageComponent = ({ message }: ChatMessageComponentProps) => {
         );
     }
 
+    const isRestrictionMessage = message.content.includes("I can only provide information about defense and aerospace companies and related topics.");
+    const bgColor = isRestrictionMessage ? "bg-amber-900/40 border border-amber-700/50" : "bg-gray-800";
+
     return (
         <div className="flex justify-start mb-8">
-            <div className="max-w-4xl bg-gray-800 text-white rounded-2xl rounded-tl-md px-6 py-5">
+            <div className={`max-w-4xl ${bgColor} text-white rounded-2xl rounded-tl-md px-6 py-5`}>
                 <div className="prose prose-invert max-w-none">
                     <p className="text-gray-200 leading-relaxed mb-4">
                         {formatMessageContent(message.content)}
