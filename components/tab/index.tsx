@@ -29,33 +29,39 @@ const Tab = ({ active }: { active: string; }) => {
         }
     ];
 
-    return tabsElements.map((tab, index) => (
-        <Link
-            key={index}
-            href={tab.path}
-            prefetch={true}
-            className={`relative px-6 py-3 font-medium transition-all inline-block ${active === tab.label
-                ? 'text-white'
-                : 'text-gray-400 hover:text-gray-300'
-                }`}
-        >
-            <span className="flex items-center justify-center gap-2">
-                {tab.icon}
-                {tab.label}
-                {tab.count && (
-                    <span className={`text-xs px-2 py-0.5 rounded-full ${active === tab.label
-                        ? 'bg-emerald-500 text-white'
-                        : 'bg-gray-800 text-gray-400'
-                        }`}>
-                        {tab.count}
-                    </span>
-                )}
-            </span>
-            {active === tab.label && (
-                <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-linear-to-r from-emerald-500 to-teal-500 rounded-full"></div>
-            )}
-        </Link>
-    ));
+    return (
+        <div className="overflow-x-auto scrollbar-hide -mx-4 px-4 md:mx-0 md:px-0">
+            <div className="flex gap-1 md:gap-2 min-w-max md:min-w-0">
+                {tabsElements.map((tab, index) => (
+                    <Link
+                        key={index}
+                        href={tab.path}
+                        prefetch={true}
+                        className={`relative px-4 md:px-6 py-2 md:py-3 font-medium transition-all inline-block whitespace-nowrap text-sm md:text-base ${active === tab.label
+                            ? 'text-white'
+                            : 'text-gray-400 hover:text-gray-300'
+                            }`}
+                    >
+                        <span className="flex items-center justify-center gap-2">
+                            {tab.icon}
+                            {tab.label}
+                            {tab.count && (
+                                <span className={`text-xs px-2 py-0.5 rounded-full ${active === tab.label
+                                    ? 'bg-emerald-500 text-white'
+                                    : 'bg-gray-800 text-gray-400'
+                                    }`}>
+                                    {tab.count}
+                                </span>
+                            )}
+                        </span>
+                        {active === tab.label && (
+                            <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-linear-to-r from-emerald-500 to-teal-500 rounded-full"></div>
+                        )}
+                    </Link>
+                ))}
+            </div>
+        </div>
+    );
 };
 
 export default Tab;
