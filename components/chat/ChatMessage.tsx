@@ -26,79 +26,97 @@ const ChatMessageComponent = ({ message }: ChatMessageComponentProps) => {
 
     if (message.type === 'user') {
         return (
-            <div className="flex justify-end mb-6">
-                <div className="max-w-3xl bg-purple-600 text-white rounded-2xl rounded-tr-md px-6 py-4">
-                    <p className="text-sm opacity-90">{formatMessageContent(message.content)}</p>
-                    <p className="text-xs opacity-60 mt-2">
-                        {message.timestamp.toLocaleTimeString()}
-                    </p>
+            <div className="flex justify-end mb-4 font-mono">
+                <div className="max-w-3xl bg-emerald-500 text-black border border-emerald-400">
+                    <div className="flex items-center justify-between px-3 py-1 bg-emerald-600 border-b border-emerald-400">
+                        <span className="text-[10px] font-bold uppercase tracking-wider">User Query</span>
+                        <span className="text-[10px] opacity-70">{message.timestamp.toLocaleTimeString()}</span>
+                    </div>
+                    <div className="px-3 py-2">
+                        <p className="text-sm font-medium">{formatMessageContent(message.content)}</p>
+                    </div>
                 </div>
             </div>
         );
     }
 
     const isRestrictionMessage = message.content.includes("I can only provide information about defense and aerospace companies and related topics.");
-    const bgColor = isRestrictionMessage ? "bg-amber-900/40 border border-amber-700/50" : "bg-gray-800";
+    const borderColor = isRestrictionMessage ? "border-amber-700" : "border-emerald-900";
+    const headerBg = isRestrictionMessage ? "bg-amber-900/50" : "bg-emerald-900/30";
+    const headerText = isRestrictionMessage ? "text-amber-500" : "text-emerald-600";
 
     return (
-        <div className="flex justify-start mb-8">
-            <div className={`max-w-4xl ${bgColor} text-white rounded-2xl rounded-tl-md px-6 py-5`}>
-                <div className="prose prose-invert max-w-none">
-                    <p className="text-gray-200 leading-relaxed mb-4">
-                        {formatMessageContent(message.content)}
-                    </p>
+        <div className="flex justify-start mb-6 font-mono">
+            <div className={`max-w-4xl bg-black border ${borderColor}`}>
+                {/* Message header */}
+                <div className={`flex items-center justify-between px-3 py-1 ${headerBg} border-b ${borderColor}`}>
+                    <div className="flex items-center gap-2">
+                        <span className={`w-1.5 h-1.5 ${isRestrictionMessage ? 'bg-amber-500' : 'bg-emerald-500'} animate-pulse`}></span>
+                        <span className={`text-[10px] font-bold uppercase tracking-widest ${headerText}`}>
+                            {isRestrictionMessage ? '⚠ System Notice' : '▸ AI Response'}
+                        </span>
+                    </div>
+                    <span className="text-[10px] text-emerald-700">{message.timestamp.toLocaleTimeString()}</span>
                 </div>
 
-                {/* Sources Section */}
-                {message.web_sources && message.web_sources.length > 0 && (
-                    <div className="mt-4 pt-4 border-t border-gray-700">
-                        <h4 className="text-sm font-semibold text-gray-300 mb-3">Sources:</h4>
-                        <div className="space-y-2">
-                            {message.web_sources.slice(0, 3).map((source: WebSource, index: number) => (
-                                <div key={index} className="text-xs bg-gray-900 rounded-lg p-3">
-                                    <a
-                                        href={source.url}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="text-emerald-400 hover:text-emerald-300 font-medium block mb-1"
+                <div className="p-4">
+                    <p className={`text-sm leading-relaxed mb-4 ${isRestrictionMessage ? 'text-amber-100/80' : 'text-emerald-100/80'}`}>
+                        {formatMessageContent(message.content)}
+                    </p>
+
+                    {/* Sources Section */}
+                    {message.web_sources && message.web_sources.length > 0 && (
+                        <div className="mt-4 pt-3 border-t border-emerald-900/50">
+                            <div className="flex items-center gap-2 mb-2">
+                                <span className="text-[10px] text-emerald-600 uppercase tracking-widest">▸ Sources</span>
+                            </div>
+                            <div className="space-y-1">
+                                {message.web_sources.slice(0, 3).map((source: WebSource, index: number) => (
+                                    <div key={index} className="text-xs border border-emerald-900/30 p-2 hover:border-emerald-500/50 transition-colors">
+                                        <a
+                                            href={source.url}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="text-emerald-400 hover:text-emerald-300 font-bold block mb-1 uppercase tracking-wide text-[10px]"
+                                        >
+                                            [{String(index + 1).padStart(2, '0')}] {source.title}
+                                        </a>
+                                        <p className="text-emerald-100/50 line-clamp-2 text-[10px]">
+                                            {source.snippet}
+                                        </p>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Companies Referenced */}
+                    {message.companies_referenced && message.companies_referenced.length > 0 && (
+                        <div className="mt-3">
+                            <div className="flex flex-wrap gap-1">
+                                {message.companies_referenced.map((company, index) => (
+                                    <span
+                                        key={index}
+                                        className="text-[10px] bg-emerald-500/20 text-emerald-400 px-2 py-0.5 font-bold uppercase tracking-wide border border-emerald-500/30"
                                     >
-                                        {source.title}
-                                    </a>
-                                    <p className="text-gray-400 line-clamp-2">
-                                        {source.snippet}
-                                    </p>
-                                </div>
-                            ))}
+                                        [{company}]
+                                    </span>
+                                ))}
+                            </div>
                         </div>
-                    </div>
-                )}
+                    )}
 
-                {/* Companies Referenced */}
-                {message.companies_referenced && message.companies_referenced.length > 0 && (
-                    <div className="mt-3">
-                        <div className="flex flex-wrap gap-2">
-                            {message.companies_referenced.map((company, index) => (
-                                <span
-                                    key={index}
-                                    className="text-xs bg-emerald-600 text-white px-2 py-1 rounded-full"
-                                >
-                                    {company}
-                                </span>
-                            ))}
+                    {/* Metadata */}
+                    <div className="flex flex-col md:flex-row md:items-center md:justify-between mt-4 pt-2 border-t border-emerald-900/50 text-[10px] text-emerald-700 gap-2">
+                        <span className="uppercase tracking-wide">{message.timestamp.toLocaleString()}</span>
+                        <div className="flex items-center gap-3">
+                            {message.confidence && (
+                                <span className="uppercase tracking-wide">Conf: {Math.round(message.confidence * 100)}%</span>
+                            )}
+                            {message.processing_time && (
+                                <span className="uppercase tracking-wide">Time: {formatProcessingTime(message.processing_time)}</span>
+                            )}
                         </div>
-                    </div>
-                )}
-
-                {/* Metadata */}
-                <div className="flex items-center justify-between mt-4 pt-3 border-t border-gray-700 text-xs text-gray-400">
-                    <span>{message.timestamp.toLocaleString()}</span>
-                    <div className="flex items-center space-x-4">
-                        {message.confidence && (
-                            <span>Confidence: {Math.round(message.confidence * 100)}%</span>
-                        )}
-                        {message.processing_time && (
-                            <span>Processing: {formatProcessingTime(message.processing_time)}</span>
-                        )}
                     </div>
                 </div>
             </div>

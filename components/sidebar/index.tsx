@@ -31,7 +31,7 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
                     </svg>
                 </button>
 
-                <h1 className="text-xl md:text-2xl font-bold mb-8 md:mb-12 px-6 text-white">octob3r</h1>
+                <h1 className="text-xl md:text-2xl font-bold mb-8 md:mb-12 px-6 text-white">0ct0b3r</h1>
 
                 <div className="space-y-2 mb-8">
                     <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider px-6 mb-4">Watchlist</p>

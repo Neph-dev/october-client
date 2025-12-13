@@ -7,9 +7,13 @@ interface PromptCardProps {
 const PromptCard = ({ text, onClick }: PromptCardProps) => (
     <button
         onClick={onClick}
-        className="bg-white bg-opacity-50 backdrop-blur-sm cursor-pointer rounded-2xl p-3 text-left hover:bg-opacity-70 transition-all hover:scale-105 hover:shadow-lg group"
+        className="font-mono bg-black border border-emerald-900 hover:border-emerald-500 cursor-pointer p-3 text-left transition-all group"
     >
-        <p className="text-gray-700 text-sm leading-relaxed">{text}</p>
+        <div className="flex items-start gap-2">
+            <span className="text-emerald-500 text-xs">▸</span>
+            <p className="text-emerald-100/80 text-xs leading-relaxed group-hover:text-emerald-400 transition-colors">{text}</p>
+        </div>
+        <div className="h-0.5 bg-emerald-500/0 group-hover:bg-emerald-500 transition-all duration-200 mt-2"></div>
     </button>
 );
 

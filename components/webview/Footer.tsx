@@ -15,30 +15,36 @@ const Footer = ({
     onClose,
 }: FooterProps) => {
     return (
-        <div className="p-4 border-t border-gray-700">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-sm text-gray-400">
-                    <span>Processing time: {formatProcessingTime(summaryData.processing_time)}</span>
-                    <span className="hidden sm:inline">•</span>
-                    <span>Article ID: {summaryData.article_id}</span>
+        <div className="font-mono border-t border-emerald-900/50 bg-emerald-900/20">
+            {/* Status bar */}
+            <div className="flex items-center justify-between px-3 py-1 border-b border-emerald-900/30 text-[10px] text-emerald-700">
+                <span className="uppercase tracking-widest">▸ Article Metadata</span>
+                <span className="flex items-center gap-1">
+                    <span className="w-1.5 h-1.5 bg-emerald-500 animate-pulse"></span>
+                    Ready
+                </span>
+            </div>
+
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 p-3">
+                <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-[10px] md:text-xs text-emerald-600">
+                    <span className="uppercase tracking-wide">Time: {formatProcessingTime(summaryData.processing_time)}</span>
+                    <span className="hidden sm:inline text-emerald-800">|</span>
+                    <span className="uppercase tracking-wide">ID: [{summaryData.article_id.substring(0, 8)}...]</span>
                 </div>
 
                 <div className="flex items-center gap-2">
                     <button
                         onClick={() => window.open(summaryData.source_url, '_blank')}
-                        className="text-emerald-400 hover:text-emerald-300 text-sm font-medium flex items-center gap-2 flex-1 sm:flex-none justify-center sm:justify-start"
+                        className="px-3 py-1.5 text-[10px] md:text-xs font-bold text-emerald-400 bg-black border border-emerald-900 hover:border-emerald-500 hover:bg-emerald-500/10 transition-all uppercase tracking-wide flex-1 sm:flex-none"
                     >
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                        </svg>
-                        <span>Read Original</span>
+                        [Source ↗]
                     </button>
 
                     <button
                         onClick={onClose}
-                        className="px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-lg transition-colors flex-1 sm:flex-none"
+                        className="px-3 py-1.5 text-[10px] md:text-xs font-bold bg-emerald-500 hover:bg-emerald-400 text-black transition-colors uppercase tracking-wide flex-1 sm:flex-none"
                     >
-                        Close
+                        [Close ×]
                     </button>
                 </div>
             </div>

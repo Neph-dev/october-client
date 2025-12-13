@@ -1,4 +1,3 @@
-import { ArrowRight } from 'lucide-react';
 import React from 'react';
 
 interface ChatInputProps {
@@ -10,23 +9,38 @@ interface ChatInputProps {
 }
 
 const ChatInput = ({ value, onChange, onSubmit, placeholder, disabled = false }: ChatInputProps) => (
-    <div className="relative">
-        <input
-            type="text"
-            value={value}
-            onChange={onChange}
-            onKeyPress={(e) => e.key === 'Enter' && !disabled && onSubmit()}
-            placeholder={placeholder}
-            disabled={disabled}
-            className="w-full bg-white bg-opacity-50 backdrop-blur-sm rounded-full pl-6 pr-14 py-4 text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-        />
-        <button
-            onClick={onSubmit}
-            disabled={disabled}
-            className="absolute right-2 top-1/2 -translate-y-1/2 bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-full p-3 hover:scale-110 transition-transform disabled:opacity-50 disabled:hover:scale-100 disabled:cursor-not-allowed"
-        >
-            <ArrowRight size={20} />
-        </button>
+    <div className="font-mono border border-emerald-900 bg-black">
+        {/* Input header */}
+        <div className="flex items-center justify-between px-3 py-1 bg-emerald-900/30 border-b border-emerald-900/50">
+            <div className="flex items-center gap-2 text-[10px] text-emerald-600">
+                <span>▸</span>
+                <span className="uppercase tracking-widest">Query Input</span>
+            </div>
+            <div className="flex items-center gap-1 text-[10px] text-emerald-500">
+                <span className={`w-1.5 h-1.5 ${disabled ? 'bg-amber-500' : 'bg-emerald-500'} animate-pulse`}></span>
+                <span>{disabled ? 'Processing' : 'Ready'}</span>
+            </div>
+        </div>
+
+        <div className="flex items-center">
+            <span className="text-emerald-500 pl-3 text-sm">{'>'}</span>
+            <input
+                type="text"
+                value={value}
+                onChange={onChange}
+                onKeyPress={(e) => e.key === 'Enter' && !disabled && onSubmit()}
+                placeholder={placeholder}
+                disabled={disabled}
+                className="flex-1 bg-transparent px-2 py-3 text-emerald-100 placeholder-emerald-700 focus:outline-none text-sm font-mono disabled:opacity-50 disabled:cursor-not-allowed"
+            />
+            <button
+                onClick={onSubmit}
+                disabled={disabled}
+                className="px-4 py-3 bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-xs uppercase tracking-wider transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+                [Send →]
+            </button>
+        </div>
     </div>
 );
 
