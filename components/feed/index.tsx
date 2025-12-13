@@ -98,13 +98,13 @@ const FeedView = () => {
     };
 
     return (
-        <div className="flex h-screen bg-black text-white">
+        <div className="flex h-screen bg-black text-white font-mono">
             <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
             <div className="flex-1 overflow-y-auto">
                 <button
                     onClick={() => setSidebarOpen(true)}
-                    className="md:hidden fixed top-4 left-4 z-30 bg-gray-900 text-white p-2 rounded-lg hover:bg-gray-800"
+                    className="md:hidden fixed top-4 left-4 z-30 bg-black text-emerald-500 p-2 border border-emerald-900 hover:border-emerald-500 hover:bg-emerald-500/10 transition-all"
                 >
                     <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
@@ -112,25 +112,34 @@ const FeedView = () => {
                 </button>
 
                 <div className="p-4 md:p-8 pt-16 md:pt-8">
-                    <div className="mb-8 md:mb-12">
+                    <div className="mb-6 md:mb-8">
                         <Tab active="News Feed" />
                     </div>
 
-                    <div className="mb-6 md:mb-8">
-                        <h2 className="text-3xl md:text-5xl font-bold mb-2">Feeds</h2>
+                    {/* Header Section */}
+                    <div className="mb-6 md:mb-8 border-b border-emerald-900/50 pb-4">
+                        <div className="flex items-center gap-2 mb-2">
+                            <span className="w-2 h-2 bg-emerald-500 animate-pulse"></span>
+                            <span className="text-emerald-600 text-[10px] uppercase tracking-widest">Live Feed</span>
+                        </div>
+                        <h2 className="text-2xl md:text-4xl font-bold uppercase tracking-wider text-emerald-100">▸ News Feed</h2>
 
                         {selectedCompany !== 'All Companies' && (
-                            <p className="text-gray-400 text-lg">
-                                Showing feeds for: <span className="text-emerald-400 font-medium">{selectedCompany}</span>
+                            <p className="text-emerald-600 text-sm mt-2 uppercase tracking-wide">
+                                Filter: <span className="text-emerald-400 font-bold">[{selectedCompany}]</span>
                             </p>
                         )}
                     </div>
 
                     {isLoading ? (
-                        <div className="flex items-center justify-center py-12">
+                        <div className="flex items-center justify-center py-12 border border-emerald-900/50">
                             <div className="text-center">
-                                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-400 mx-auto mb-4"></div>
-                                <p className="text-gray-400">Loading feeds...</p>
+                                <div className="flex items-center gap-2 mb-4 justify-center">
+                                    <span className="w-2 h-2 bg-emerald-500 animate-pulse"></span>
+                                    <span className="w-2 h-2 bg-emerald-500 animate-pulse delay-75"></span>
+                                    <span className="w-2 h-2 bg-emerald-500 animate-pulse delay-150"></span>
+                                </div>
+                                <p className="text-emerald-600 text-xs uppercase tracking-widest">Loading Data...</p>
                             </div>
                         </div>
                     ) : (

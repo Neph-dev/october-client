@@ -1,78 +1,95 @@
 import React from 'react';
 
 interface FeedCardProps {
-    number: number;
     title: string;
-    author: string;
-    timeAgo: string;
-    onCardClick?: (articleId: string, title: string) => void;
+    companies: string[];
+    processed_date: string;
+    index: number;
+    summary: string;
+    source_url?: string;
+    id: string;
+    onCardClick: (id: string, title: string) => void;
 }
 
-const FeedCard = ({ title, companies, processed_date, index, summary, source_url, id, onCardClick }: any) => {
+const FeedCard = ({ title, companies, processed_date, index, summary, id, onCardClick }: FeedCardProps) => {
     const handleClick = () => {
         if (onCardClick && id) {
             onCardClick(id, title);
         }
     };
 
+    const formattedDate = new Date(processed_date).toLocaleDateString('en-US', {
+        month: 'short',
+        day: '2-digit',
+        year: 'numeric'
+    }).toUpperCase();
+
+    const formattedTime = new Date(processed_date).toLocaleTimeString('en-US', {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false
+    });
+
     return (
         <div
-            className="relative flex flex-col p-5 md:p-6 bg-linear-to-br from-gray-900 to-gray-950 rounded-xl border border-gray-800 hover:border-emerald-500/50 transition-all duration-300 cursor-pointer group overflow-hidden"
+            className="relative font-mono bg-black border border-emerald-900/50 hover:border-emerald-500 transition-all duration-200 cursor-pointer group overflow-hidden"
             onClick={handleClick}
         >
-            <div className="absolute inset-0 bg-linear-to-br from-emerald-500/0 to-teal-500/0 group-hover:from-emerald-500/5 group-hover:to-teal-500/5 transition-all duration-300 pointer-events-none" />
-
-            <div className="relative flex flex-col h-full">
-                <div className="flex items-start justify-between mb-4">
-                    <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-linear-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white text-lg md:text-xl font-bold shadow-lg shadow-emerald-500/20 group-hover:shadow-emerald-500/40 transition-shadow">
-                            {index + 1}
-                        </div>
-                        <div className="flex flex-wrap gap-1.5">
-                            {companies.slice(0, 2).map((company: string, idx: number) => (
-                                <span key={idx} className="px-2.5 py-1 text-[10px] md:text-xs font-medium bg-emerald-500/10 text-emerald-400 rounded-full border border-emerald-500/20">
-                                    {company}
-                                </span>
-                            ))}
-                            {companies.length > 2 && (
-                                <span className="px-2.5 py-1 text-[10px] md:text-xs font-medium bg-gray-800 text-gray-400 rounded-full border border-gray-700">
-                                    +{companies.length - 2}
-                                </span>
-                            )}
-                        </div>
-                    </div>
+            {/* Top status bar */}
+            <div className="flex items-center justify-between px-3 py-1.5 bg-emerald-500 text-black">
+                <div className="flex items-center gap-2">
+                    <span className="font-bold text-sm">{String(index + 1).padStart(3, '0')}</span>
+                    <span className="text-[10px] opacity-70">▸</span>
+                    <span className="text-xs font-bold uppercase tracking-wider truncate max-w-[150px] md:max-w-none">
+                        {companies[0]}
+                    </span>
                 </div>
+                <div className="flex items-center gap-2 text-[10px]">
+                    <span className="opacity-70">{formattedTime}</span>
+                    <span className="w-1.5 h-1.5 bg-black animate-pulse"></span>
+                </div>
+            </div>
 
-                <h3 className="text-white text-base md:text-lg font-semibold mb-3 line-clamp-2 group-hover:text-emerald-400 transition-colors leading-tight">
+            {/* Company tickers */}
+            <div className="flex items-center gap-1 px-3 py-1.5 bg-emerald-900/20 border-b border-emerald-900/30">
+                {companies.slice(0, 3).map((company: string, idx: number) => (
+                    <span key={idx} className="px-1.5 py-0.5 text-[10px] font-bold bg-emerald-500/20 text-emerald-400 uppercase tracking-wide">
+                        [{company.substring(0, 4)}]
+                    </span>
+                ))}
+                {companies.length > 3 && (
+                    <span className="text-[10px] text-emerald-600">+{companies.length - 3}</span>
+                )}
+            </div>
+
+            {/* Content */}
+            <div className="p-3 md:p-4">
+                {/* Title */}
+                <h3 className="text-emerald-100 text-sm md:text-base font-bold mb-2 line-clamp-2 group-hover:text-emerald-400 transition-colors leading-tight uppercase tracking-wide">
                     {title}
                 </h3>
 
-                <p className="text-gray-400 text-sm md:text-sm mb-4 line-clamp-3 flex-1 leading-relaxed">
+                {/* Summary */}
+                <p className="text-emerald-100/60 text-xs md:text-sm mb-3 line-clamp-3 leading-relaxed">
                     {summary}
                 </p>
 
-                <div className="flex items-center justify-between pt-4 border-t border-gray-800 mt-auto">
-                    <div className="flex items-center gap-2">
-                        <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        <span className="text-gray-500 text-xs md:text-sm">
-                            {new Date(processed_date).toLocaleDateString('en-US', {
-                                month: 'short',
-                                day: 'numeric',
-                                year: 'numeric'
-                            })}
-                        </span>
+                {/* Footer */}
+                <div className="flex items-center justify-between pt-3 border-t border-emerald-900/30">
+                    <div className="flex items-center gap-2 text-[10px] md:text-xs text-emerald-600">
+                        <span>◷</span>
+                        <span className="uppercase tracking-wider">{formattedDate}</span>
                     </div>
 
-                    <div className="flex items-center gap-1.5 text-emerald-400 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <span className="text-xs md:text-sm font-medium">Read more</span>
-                        <svg className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                        </svg>
+                    <div className="flex items-center gap-1 text-emerald-500 opacity-0 group-hover:opacity-100 transition-opacity text-xs">
+                        <span className="uppercase tracking-wider font-bold">[Read]</span>
+                        <span>→</span>
                     </div>
                 </div>
             </div>
+
+            {/* Bottom accent line */}
+            <div className="h-0.5 bg-emerald-500/0 group-hover:bg-emerald-500 transition-all duration-200"></div>
         </div>
     );
 };

@@ -158,13 +158,13 @@ const ChartsPage = () => {
     };
 
     return (
-        <div className="flex h-screen bg-black text-white">
+        <div className="flex h-screen bg-black text-white font-mono">
             <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
             <div className="flex-1 overflow-y-auto">
                 <button
                     onClick={() => setSidebarOpen(true)}
-                    className="md:hidden fixed top-4 left-4 z-30 bg-gray-900 text-white p-2 rounded-lg hover:bg-gray-800"
+                    className="md:hidden fixed top-4 left-4 z-30 bg-black text-emerald-500 p-2 border border-emerald-900 hover:border-emerald-500 hover:bg-emerald-500/10 transition-all"
                 >
                     <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
@@ -172,49 +172,50 @@ const ChartsPage = () => {
                 </button>
 
                 <div className="p-4 md:p-8 pt-16 md:pt-8">
-                    <div className="mb-8 md:mb-12">
+                    <div className="mb-6 md:mb-8">
                         <Tab active="Charts" />
                     </div>
 
-                    <div className="mb-6 md:mb-8">
-                        <div className="flex flex-col md:flex-row md:justify-between md:items-start mb-4 gap-3">
-                            <div>
-                                <h2 className="text-3xl md:text-5xl font-bold mb-2">Trading Charts</h2>
-                                <p className="text-gray-400 text-sm md:text-lg">
-                                    Real-time market data and advanced charting for defense & aerospace stocks
-                                </p>
-                                {selectedCompany !== 'All Companies' && (
-                                    <p className="text-gray-400 text-xs md:text-sm mt-2">
-                                        Currently viewing: <span className="text-emerald-400 font-medium">{selectedCompany}</span>
-                                    </p>
-                                )}
-                            </div>
+                    {/* Header Section */}
+                    <div className="mb-6 md:mb-8 border-b border-emerald-900/50 pb-4">
+                        <div className="flex items-center gap-2 mb-2">
+                            <span className="w-2 h-2 bg-emerald-500 animate-pulse"></span>
+                            <span className="text-emerald-600 text-[10px] uppercase tracking-widest">Live Market Data</span>
                         </div>
+                        <h2 className="text-2xl md:text-4xl font-bold uppercase tracking-wider text-emerald-100">▸ Trading Charts</h2>
+                        <p className="text-emerald-600 text-xs md:text-sm mt-2 uppercase tracking-wide">
+                            Defense & Aerospace Market Terminal
+                        </p>
+                        {selectedCompany !== 'All Companies' && (
+                            <p className="text-emerald-700 text-xs mt-2 uppercase tracking-wide">
+                                Filter: <span className="text-emerald-400 font-bold">[{selectedCompany}]</span>
+                            </p>
+                        )}
                     </div>
 
                     <div className="grid grid-cols-1 xl:grid-cols-4 gap-4 md:gap-8">
                         {/* Stock Quotes Sidebar */}
                         <div className="xl:col-span-1 order-2 xl:order-1">
                             {isLoadingTickers ? (
-                                <div className="bg-gray-900 rounded-lg p-4 md:p-6">
-                                    <div className="animate-pulse">
-                                        <div className="flex justify-between items-center mb-4">
-                                            <div className="h-6 bg-gray-700 rounded w-32"></div>
-                                            <div className="h-4 bg-gray-700 rounded w-24"></div>
-                                        </div>
-                                        {[...Array(3)].map((_, i) => (
-                                            <div key={i} className="flex justify-between items-center py-3 border-b border-gray-700 last:border-b-0">
-                                                <div className="space-y-2">
-                                                    <div className="h-4 bg-gray-700 rounded w-16"></div>
-                                                    <div className="h-3 bg-gray-700 rounded w-24"></div>
-                                                </div>
-                                                <div className="text-right space-y-2">
-                                                    <div className="h-4 bg-gray-700 rounded w-20"></div>
-                                                    <div className="h-3 bg-gray-700 rounded w-16"></div>
-                                                </div>
-                                            </div>
-                                        ))}
+                                <div className="bg-black border border-emerald-900 p-4">
+                                    <div className="flex items-center gap-2 mb-4">
+                                        <span className="w-2 h-2 bg-emerald-500 animate-pulse"></span>
+                                        <span className="w-2 h-2 bg-emerald-500 animate-pulse delay-75"></span>
+                                        <span className="w-2 h-2 bg-emerald-500 animate-pulse delay-150"></span>
+                                        <span className="text-emerald-600 text-xs uppercase tracking-widest ml-2">Loading Tickers...</span>
                                     </div>
+                                    {[...Array(3)].map((_, i) => (
+                                        <div key={i} className="flex justify-between items-center py-2 border-b border-emerald-900/30 last:border-b-0">
+                                            <div className="space-y-1">
+                                                <div className="h-3 bg-emerald-900/50 w-16"></div>
+                                                <div className="h-2 bg-emerald-900/30 w-24"></div>
+                                            </div>
+                                            <div className="text-right space-y-1">
+                                                <div className="h-3 bg-emerald-900/50 w-16"></div>
+                                                <div className="h-2 bg-emerald-900/30 w-12"></div>
+                                            </div>
+                                        </div>
+                                    ))}
                                 </div>
                             ) : (
                                 <StockQuotes
@@ -229,121 +230,130 @@ const ChartsPage = () => {
 
                         {/* Main Chart Area */}
                         <div className="xl:col-span-3 order-1 xl:order-2">
-                            <div className="bg-gray-900 rounded-lg p-3 md:p-6 w-full">
-                                <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-4 md:mb-6 gap-3">
-                                    <div>
-                                        <h3 className="text-lg md:text-xl font-semibold text-white">
-                                            {getCurrentTickerSymbol()} Chart
-                                        </h3>
-                                        <p className="text-gray-400 text-xs md:text-sm">
-                                            Advanced charting powered by TradingView
-                                        </p>
+                            <div className="bg-black border border-emerald-900 w-full">
+                                {/* Chart header */}
+                                <div className="flex items-center justify-between px-3 py-2 bg-emerald-900/30 border-b border-emerald-900/50">
+                                    <div className="flex items-center gap-3">
+                                        <div className="flex items-center gap-2">
+                                            <span className="w-2 h-2 bg-emerald-500 animate-pulse"></span>
+                                            <span className="text-emerald-400 font-bold text-sm md:text-base uppercase">
+                                                [{getCurrentTickerSymbol()}]
+                                            </span>
+                                        </div>
+                                        <span className="text-emerald-700 text-[10px] uppercase tracking-widest hidden md:inline">
+                                            TradingView Terminal
+                                        </span>
                                     </div>
 
-                                    <div className="flex items-center space-x-2">
-                                        <select
-                                            value={selectedTicker}
-                                            onChange={(e) => setSelectedTicker(e.target.value)}
-                                            className="bg-gray-800 text-white border border-gray-700 rounded-lg px-2 md:px-3 py-1.5 md:py-2 text-xs md:text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 w-full md:w-auto"
-                                        >
-                                            {tickersData.map((tickerData) => (
-                                                <option key={tickerData.ticker} value={`NYSE:${tickerData.ticker}`}>
-                                                    {tickerData.ticker} - {tickerData.company_name}
-                                                </option>
-                                            ))}
-                                            {/* Fallback if tickersData is empty but availableTickers has data */}
-                                            {tickersData.length === 0 && availableTickers.map((ticker) => (
-                                                <option key={ticker} value={`NYSE:${ticker}`}>
-                                                    {ticker}
-                                                </option>
-                                            ))}
-                                        </select>
-                                    </div>
+                                    <select
+                                        value={selectedTicker}
+                                        onChange={(e) => setSelectedTicker(e.target.value)}
+                                        className="bg-black text-emerald-400 border border-emerald-900 px-2 py-1 text-xs focus:outline-none focus:border-emerald-500 font-mono uppercase"
+                                    >
+                                        {tickersData.map((tickerData) => (
+                                            <option key={tickerData.ticker} value={`NYSE:${tickerData.ticker}`}>
+                                                [{tickerData.ticker}] {tickerData.company_name}
+                                            </option>
+                                        ))}
+                                        {tickersData.length === 0 && availableTickers.map((ticker) => (
+                                            <option key={ticker} value={`NYSE:${ticker}`}>
+                                                [{ticker}]
+                                            </option>
+                                        ))}
+                                    </select>
                                 </div>
 
-                                <div className="h-[400px] md:h-[600px] w-full">
-                                    <TradingViewChart
-                                        symbol={selectedTicker}
-                                        height={600}
-                                        theme="dark"
-                                        container_id={`tradingview_${getCurrentTickerSymbol()}`}
-                                    />
+                                <div className="p-2 md:p-4">
+
+                                    <div className="h-[400px] md:h-[600px] w-full">
+                                        <TradingViewChart
+                                            symbol={selectedTicker}
+                                            height={600}
+                                            theme="dark"
+                                            container_id={`tradingview_${getCurrentTickerSymbol()}`}
+                                        />
+                                    </div>
                                 </div>
                             </div>
 
                             {/* Market Summary Cards */}
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mt-4 md:mt-8">
-                                <div className="bg-gray-900 rounded-lg p-4 md:p-6">
-                                    <div className="flex items-center justify-between">
-                                        <div className="flex-1 min-w-0">
-                                            <p className="text-gray-400 text-xs md:text-sm">Market Status</p>
-                                            {isLoadingMarketStatus ? (
-                                                <div className="animate-pulse">
-                                                    <div className="h-5 bg-gray-700 rounded w-24 mt-1"></div>
-                                                </div>
-                                            ) : (
-                                                <p className={`font-semibold text-sm md:text-base ${getMarketStatusDisplay().color}`}>
-                                                    {getMarketStatusDisplay().text}
-                                                </p>
-                                            )}
-                                            {marketStatus && marketStatus.next_open && (
-                                                <p className="text-gray-500 text-[10px] md:text-xs mt-1 truncate">
-                                                    Next: {new Date(marketStatus.next_open).toLocaleDateString('en-US', {
-                                                        weekday: 'short',
-                                                        month: 'short',
-                                                        day: 'numeric',
-                                                        hour: 'numeric',
-                                                        minute: '2-digit',
-                                                        timeZone: 'America/New_York'
-                                                    })} ET
-                                                </p>
-                                            )}
-                                        </div>
-                                        <div className={`w-2.5 h-2.5 md:w-3 md:h-3 rounded-full shrink-0 ml-2 ${isLoadingMarketStatus ? 'bg-gray-400' : getMarketStatusDisplay().dotColor}`}></div>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-2 md:gap-4 mt-4 md:mt-6">
+                                <div className="bg-black border border-emerald-900">
+                                    <div className="px-3 py-1 bg-emerald-900/30 border-b border-emerald-900/50">
+                                        <span className="text-[10px] text-emerald-600 uppercase tracking-widest">▸ Market Status</span>
                                     </div>
-                                </div>
-
-                                <div className="bg-gray-900 rounded-lg p-4 md:p-6">
-                                    <div className="flex items-center justify-between">
-                                        <div>
-                                            <p className="text-gray-400 text-xs md:text-sm">Exchange</p>
-                                            <p className="text-white font-semibold text-sm md:text-base">
-                                                NYSE
-                                            </p>
-                                            <p className="text-gray-500 text-[10px] md:text-xs mt-1">
-                                                New York Stock Exchange
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="bg-gray-900 rounded-lg p-4 md:p-6">
-                                    <div className="flex items-center justify-between">
-                                        <div className="flex-1 min-w-0">
-                                            <p className="text-gray-400 text-xs md:text-sm">Timezone</p>
-                                            <p className="text-white font-semibold text-sm md:text-base">
-                                                Eastern Time
-                                            </p>
-                                            {marketStatus && (
-                                                <div className="text-gray-500 text-[10px] md:text-xs mt-1 space-y-0.5">
-                                                    <p className="truncate">
-                                                        {new Date(marketStatus.current_time).toLocaleTimeString('en-US', {
-                                                            timeZone: 'America/New_York',
+                                    <div className="p-3">
+                                        <div className="flex items-center justify-between">
+                                            <div className="flex-1 min-w-0">
+                                                {isLoadingMarketStatus ? (
+                                                    <div className="flex items-center gap-2">
+                                                        <span className="w-2 h-2 bg-emerald-500 animate-pulse"></span>
+                                                        <span className="text-emerald-600 text-xs">Loading...</span>
+                                                    </div>
+                                                ) : (
+                                                    <p className={`font-bold text-sm uppercase tracking-wide ${getMarketStatusDisplay().color}`}>
+                                                        [{getMarketStatusDisplay().text}]
+                                                    </p>
+                                                )}
+                                                {marketStatus && marketStatus.next_open && (
+                                                    <p className="text-emerald-700 text-[10px] mt-1 truncate uppercase">
+                                                        Next: {new Date(marketStatus.next_open).toLocaleDateString('en-US', {
+                                                            weekday: 'short',
+                                                            month: 'short',
+                                                            day: 'numeric',
                                                             hour: 'numeric',
                                                             minute: '2-digit',
-                                                            second: '2-digit'
+                                                            timeZone: 'America/New_York'
                                                         })} ET
                                                     </p>
-                                                    <p className="truncate">
-                                                        Local: {new Date(marketStatus.current_time).toLocaleString('en-US', {
-                                                            hour: 'numeric',
-                                                            minute: '2-digit',
-                                                            second: '2-digit'
-                                                        })}
-                                                    </p>
-                                                </div>
-                                            )}
+                                                )}
+                                            </div>
+                                            <div className={`w-2 h-2 shrink-0 ml-2 ${isLoadingMarketStatus ? 'bg-emerald-900' : getMarketStatusDisplay().dotColor}`}></div>
                                         </div>
+                                    </div>
+                                </div>
+
+                                <div className="bg-black border border-emerald-900">
+                                    <div className="px-3 py-1 bg-emerald-900/30 border-b border-emerald-900/50">
+                                        <span className="text-[10px] text-emerald-600 uppercase tracking-widest">▸ Exchange</span>
+                                    </div>
+                                    <div className="p-3">
+                                        <p className="text-emerald-400 font-bold text-sm uppercase tracking-wide">
+                                            [NYSE]
+                                        </p>
+                                        <p className="text-emerald-700 text-[10px] mt-1 uppercase">
+                                            New York Stock Exchange
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div className="bg-black border border-emerald-900">
+                                    <div className="px-3 py-1 bg-emerald-900/30 border-b border-emerald-900/50">
+                                        <span className="text-[10px] text-emerald-600 uppercase tracking-widest">▸ Timezone</span>
+                                    </div>
+                                    <div className="p-3">
+                                        <p className="text-emerald-400 font-bold text-sm uppercase tracking-wide">
+                                            [Eastern Time]
+                                        </p>
+                                        {marketStatus && (
+                                            <div className="text-emerald-700 text-[10px] mt-1 space-y-0.5 uppercase">
+                                                <p className="truncate">
+                                                    {new Date(marketStatus.current_time).toLocaleTimeString('en-US', {
+                                                        timeZone: 'America/New_York',
+                                                        hour: 'numeric',
+                                                        minute: '2-digit',
+                                                        second: '2-digit'
+                                                    })} ET
+                                                </p>
+                                                <p className="truncate">
+                                                    Local: {new Date(marketStatus.current_time).toLocaleString('en-US', {
+                                                        hour: 'numeric',
+                                                        minute: '2-digit',
+                                                        second: '2-digit'
+                                                    })}
+                                                </p>
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
                             </div>

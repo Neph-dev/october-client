@@ -78,55 +78,57 @@ const WebView = ({ articleId, isOpen, onClose, title }: WebViewProps) => {
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-            <div className="bg-gray-900 rounded-lg w-full max-w-4xl h-full max-h-[90vh] flex flex-col">
+        <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-2 md:p-4 font-mono">
+            <div className="bg-black border border-emerald-900 w-full max-w-4xl h-full max-h-[95vh] flex flex-col">
                 {/* Header */}
                 <Header summaryData={summaryData} title={title || summaryData?.original_title || 'Article Summary'} onClose={onClose} />
 
                 {/* Content */}
-                <div className="flex-1 overflow-y-auto p-6">
+                <div className="flex-1 overflow-y-auto p-4 md:p-6 border-t border-emerald-900/50">
                     {isLoading && (
-                        <div className="flex items-center justify-center h-full">
-                            <div className="text-center">
-                                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-400 mx-auto mb-4"></div>
-                                <p className="text-gray-400">Generating AI summary...</p>
+                        <div className="flex items-center justify-center h-full border border-emerald-900/30">
+                            <div className="text-center p-8">
+                                <div className="flex items-center gap-2 mb-4 justify-center">
+                                    <span className="w-2 h-2 bg-emerald-500 animate-pulse"></span>
+                                    <span className="w-2 h-2 bg-emerald-500 animate-pulse delay-75"></span>
+                                    <span className="w-2 h-2 bg-emerald-500 animate-pulse delay-150"></span>
+                                </div>
+                                <p className="text-emerald-600 text-xs uppercase tracking-widest">Processing AI Summary...</p>
                             </div>
                         </div>
                     )}
 
                     {hasError && (
                         <div className="flex items-center justify-center h-full">
-                            <div className="text-center max-w-md mx-auto">
-                                <div className="w-16 h-16 mx-auto mb-4 text-red-400">
-                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.5 0L4.232 18.5c-.77.833.192 2.5 1.732 2.5z" />
-                                    </svg>
-                                </div>
-                                <h3 className="text-lg font-semibold mb-2 text-white">Unable to Generate Summary</h3>
-                                <p className="text-gray-400 mb-6 text-sm">
-                                    Failed to generate AI summary for this article. Please try again later.
+                            <div className="text-center max-w-md mx-auto border border-red-900/50 p-6">
+                                <div className="text-red-500 text-4xl mb-4">⚠</div>
+                                <h3 className="text-sm font-bold mb-2 text-red-400 uppercase tracking-wider">Error: Summary Failed</h3>
+                                <p className="text-red-600/70 mb-6 text-xs">
+                                    Unable to generate AI summary. Retry or view original source.
                                 </p>
-                                <button
-                                    onClick={() => fetchSummary(articleId)}
-                                    className="px-6 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg transition-colors font-medium mr-3"
-                                >
-                                    Retry
-                                </button>
-                                {summaryData?.source_url && (
+                                <div className="flex gap-2 justify-center">
                                     <button
-                                        onClick={() => window.open(summaryData.source_url, '_blank')}
-                                        className="px-6 py-2 bg-gray-600 hover:bg-gray-500 text-white rounded-lg transition-colors font-medium"
+                                        onClick={() => fetchSummary(articleId)}
+                                        className="px-4 py-2 bg-emerald-500 hover:bg-emerald-400 text-black text-xs font-bold uppercase tracking-wide transition-colors"
                                     >
-                                        Read Original
+                                        [Retry]
                                     </button>
-                                )}
+                                    {summaryData?.source_url && (
+                                        <button
+                                            onClick={() => window.open(summaryData.source_url, '_blank')}
+                                            className="px-4 py-2 bg-black border border-emerald-900 hover:border-emerald-500 text-emerald-400 text-xs font-bold uppercase tracking-wide transition-colors"
+                                        >
+                                            [Source]
+                                        </button>
+                                    )}
+                                </div>
                             </div>
                         </div>
                     )}
 
                     {summaryData && !isLoading && !hasError && (
                         <div className="prose prose-invert max-w-none">
-                            <div className="mb-6">
+                            <div className="mb-6 text-emerald-100/80 text-sm leading-relaxed">
                                 {formatSummary(summaryData.summary)}
                             </div>
                         </div>
